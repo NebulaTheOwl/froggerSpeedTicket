@@ -1,0 +1,55 @@
+body{
+	background-image: url(WorldMapCode.jpg);
+	background-position: center;
+	background-repeat: repeat;
+	background-size: cover;
+}
+h1{
+	background: rgba(4,4,120, 0.85);
+	color: #FF9A0F;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	border-style: solid;
+	border-radius: 10Px;
+	border-color: #FF0000;
+	text-align: center;
+}
+h2{
+	background: rgba(4,4,140, 0.85);
+	color: #FF9A0F;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	border-style: solid;
+	border-radius: 10Px;
+	border-color: #FF0000;
+	text-align: center;
+}
+h3{
+	background: rgba(4,4,160, 0.85);
+	color: #FF9A0F;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	border-style: solid;
+	border-radius: 10Px;
+	border-color: #FF0000;
+	text-align: center;
+}
+p{
+	background: rgba(4,4,180, 0.85);
+	color: #FF9A0F;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	border-style: solid;
+	border-radius: 10Px;
+	border-color: #FF0000;
+	text-align: center;
+}
+img{
+	display: inline-block;
+}
+button{
+	margin: auto;
+	display: block;
+}
+.gangDescription{
+	background: rgba(4,4,140, 0.00);
+	color: #FF9A0F;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	text-align: center;
+}
