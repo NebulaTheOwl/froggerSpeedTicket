@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1 id="youCroaked" style="position: absolute; z-index: +1; left: 180Px; top: 100Px; color: white;">
+    </h1>
+    <h1 id="finalScore" style="position: absolute; z-index: +1; left: 180Px; top: 300Px; color: white;">
+    </h1>
+    <h1 id="finalLevel" style="position: absolute; z-index: +1; left: 180Px; top: 350Px; color: white;">
+    </h1>
+    <h1 id="score" style="position: absolute; z-index: +1; left: 10Px; top: 515Px; color: white; font-size: 23Px">
+    </h1>
+    <h1 id="level" style="position: absolute; z-index: +1; left: 380Px; top: 488Px; color: white; font-size: 23Px">
+    </h1>
+    <h1 id="returnLink" style="position: absolute; z-index: +1; left: 130Px; top: 530Px;">
+        <a href="../index.html">
+            Return to Homepage
+        </a>
+    </h1>
+    <h1 id="retryNotice" style="position: absolute; z-index: +1; left: 50Px; top: 485Px; color: white;">
+    </h1>
+
+</body>
+    <script>
+        // all resources must have their own variable.
+        let background;
+        let time;
+        let timeTimer;
+        let timeBar;
+        let scoreValue = 0;
+        let progressCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        for(x = 0; x <= 11; x = x + 1){
+            progressCheck[x] = false;
+        }
+        let endHitbox1;
+        let endHitbox2;
+        let endHitbox3;
+        let endHitbox4;
+        let endHitbox5;
+        let slot = [1, 2, 3, 4, 5, 6];
+        for(x = 0; x <slot.length; x = x + 1){
+            slot[x] = "empty";
+        }
+        slot[5] = "fly";
+        let endFrog1;
+        let endFrog2;
+        let endFrog3;
+        let endFrog4;
+        let endFrog5;
+        let life = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        let lifeValue = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        for(x = 0; x <= 15; x = x + 1){
+            lifeValue[x] = false;
+        }
+        lifeValue[1] = true;
+        lifeValue[2] = true;
+        lifeValue[3] = true;
+        let extraLife = true;
+        let level = 0;
+        let levelResult;
+        let line0 = 478;
+        let line1 = 436;
+        let line1Speed;
+        let line2 = 400;
+        let line2Speed;
+        let line3 = 367;
+        let line3Speed;
+        let line4 = 331;
+        let line4Speed;
+        let line5 = 292;
+        let line5Speed;
+        let line6 = 253;
+        let line7 = 220;
+        let line7Speed;
+        let line8 = 184;
+        let line8Speed;
+        let line9 = 148;
+        let line9Speed;
+        let line10 = 107;
+        let line10Speed;
+        let line11 = 73;
+        let line11Speed;
+        let endLine = 37;
+        let allowUpMovement = true;
+        let allowDownMovement = true;
+        let leftKey;
+        let rightKey;
+        let upKey;
+        let downKey;
+        let fly;
+        let flyLocation = 5;
+        let flyTimer = 0;
+        let carType1 = [1, 2, 3];
+        let carType2 = [1, 2];
+        let carType3 = [1, 2, 3];
+        let carType4 = [1, 2];
+        let carType5 = [1, 2];
+        let turtle = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+        let smallLog = [1, 2];
+        let medLog = [1, 2];
+        let largeLog = [1, 2];
+        let playerFrog;
+        function movement(){
+
+            if(leftKey.isDown){
+                playerFrog.x = playerFrog.x - 3;
+                playerFrog.angle = -90;
+            }
+            if(rightKey.isDown){
+                playerFrog.x = playerFrog.x + 3;
+                playerFrog.angle = 90;
+            }
+            if(upKey.isDown && allowUpMovement == true){
+                allowUpMovement = false;
+                playerFrog.angle = 0;
+                if(playerFrog.y == line0){
+                    playerFrog.y = line1;
+                }
+                else if(playerFrog.y == line1){
+                    playerFrog.y = line2;
+                }
+                else if(playerFrog.y == line2){
+                    playerFrog.y = line3;
+                }
+                else if(playerFrog.y == line3){
+                    playerFrog.y = line4;
+                }
+                else if(playerFrog.y == line4){
+                    playerFrog.y = line5;
+                }
+                else if(playerFrog.y == line5){
+                    playerFrog.y = line6;
+                }
+                else if(playerFrog.y == line6){
+                    playerFrog.y = line7;
+                }
+                else if(playerFrog.y == line7){
+                    playerFrog.y = line8;
+                }
+                else if(playerFrog.y == line8){
+                    playerFrog.y = line9;
+                }
+                else if(playerFrog.y == line9){
+                    playerFrog.y = line10;
+                }
+                else if(playerFrog.y == line10){
+                    playerFrog.y = line11;
+                }
+                else if(playerFrog.y == line11){
+                    playerFrog.y = endLine;
+                }
+            }
+
+            if(upKey.isDown == false){
+                allowUpMovement = true;
+            }
+            if(downKey.isDown && allowDownMovement == true){
+                allowDownMovement = false;
+                playerFrog.angle = 180;
+                if(playerFrog.y == line11){
+                    playerFrog.y = line10;
+                }
+                else if(playerFrog.y == line10){
+                    playerFrog.y = line9;
+                }
+                else if(playerFrog.y == line9){
+                    playerFrog.y = line8;
+                }
+                else if(playerFrog.y == line8){
+                    playerFrog.y = line7;
+                }
+                else if(playerFrog.y == line7){
+                    playerFrog.y = line6;
+                }
+                else if(playerFrog.y == line6){
+                    playerFrog.y = line5;
+                }
+                else if(playerFrog.y == line5){
+                    playerFrog.y = line4;
+                }
+                else if(playerFrog.y == line4){
+                    playerFrog.y = line3;
+                }
+                else if(playerFrog.y == line3){
+                    playerFrog.y = line2;
+                }
+                else if(playerFrog.y == line2){
+                    playerFrog.y = line1;
+                }
+                else if(playerFrog.y == line1){
+                    playerFrog.y = line0;
+                }
+            }
+            if(downKey.isDown == false){
+                allowDownMovement = true;
+            }
+        }
+        function resetFrog(){
+            playerFrog.x = 250;
+            playerFrog.y = 478;
+            timeBar.x = 165;
+        }
+        function moveRoad(){
+            carType1[1].x = carType1[1].x + line1Speed;
+            carType1[2].x = carType1[2].x + line1Speed;
+            carType1[3].x = carType1[3].x + line1Speed;
+            carType2[1].x = carType2[1].x + line2Speed;
+            carType2[2].x = carType2[2].x + line2Speed;
+            carType3[1].x = carType3[1].x + line3Speed;
+            carType3[2].x = carType3[2].x + line3Speed;
+            carType3[3].x = carType3[3].x + line3Speed;
+            carType4[1].x = carType4[1].x + line4Speed;
+            carType4[2].x = carType4[2].x + line4Speed;
+            carType5[1].x = carType5[1].x + line5Speed;
+            carType5[2].x = carType5[2].x + line5Speed;
+        }
+        function moveWater(){
+            turtle[1].x = turtle[1].x + line7Speed;
+            turtle[2].x = turtle[2].x + line7Speed;
+            turtle[3].x = turtle[3].x + line7Speed;
+            turtle[4].x = turtle[4].x + line7Speed;
+            turtle[5].x = turtle[5].x + line7Speed;
+            turtle[6].x = turtle[6].x + line7Speed;
+            turtle[7].x = turtle[7].x + line7Speed;
+            turtle[8].x = turtle[8].x + line7Speed;
+            turtle[9].x = turtle[9].x + line7Speed;
+            turtle[10].x = turtle[10].x + line7Speed;
+            turtle[11].x = turtle[11].x + line7Speed;
+            turtle[12].x = turtle[12].x + line7Speed;
+            turtle[13].x = turtle[13].x + line10Speed;
+            turtle[14].x = turtle[14].x + line10Speed;
+            turtle[15].x = turtle[15].x + line10Speed;
+            turtle[16].x = turtle[16].x + line10Speed;
+            turtle[17].x = turtle[17].x + line10Speed;
+            turtle[18].x = turtle[18].x + line10Speed;
+            smallLog[1].x = smallLog[1].x + line8Speed;
+            smallLog[2].x = smallLog[2].x + line8Speed;
+            medLog[1].x = medLog[1].x + line9Speed;
+            medLog[2].x = medLog[2].x + line11Speed;
+            largeLog[1].x = largeLog[1].x + line9Speed;
+            largeLog[2].x = largeLog[2].x + line11Speed;
+        }
+        function resetRoad(){
+            if(carType1[1].x < -30){
+                carType1[1].x = 520;
+            }
+            if(carType1[2].x < -30){
+                carType1[2].x = 520;
+            }
+            if(carType1[3].x < -30){
+                carType1[3].x = 520;
+            }
+            if(carType2[1].x > 520){
+                carType2[1].x = -30;
+            }
+            if(carType2[2].x > 520){
+                carType2[2].x = -30;
+            }
+            if(carType3[1].x < -30){
+                carType3[1].x = 520;
+            }
+            if(carType3[2].x < -30){
+                carType3[2].x = 520;
+            }
+            if(carType3[3].x < -30){
+                carType3[3].x = 520;
+            }
+            if(carType4[1].x > 600){
+                carType4[1].x = -30;
+            }
+            if(carType4[2].x > 600){
+                carType4[2].x = -30;
+            }
+            if(carType5[1].x < -60){
+                carType5[1].x = 540;
+            }
+            if(carType5[2].x < -60){
+                carType5[2].x = 540;
+            }
+        }
+        function resetWater(){
+            if(turtle[1].x < -60){
+                turtle[1].x = 520;
+            }
+            if(turtle[2].x < -60){
+                turtle[2].x = 520;
+            }
+            if(turtle[3].x < -60){
+                turtle[3].x = 520;
+            }
+            if(turtle[4].x < -60){
+                turtle[4].x = 520;
+            }
+            if(turtle[5].x < -60){
+                turtle[5].x = 520;
+            }
+            if(turtle[6].x < -60){
+                turtle[6].x = 520;
+            }
+            if(turtle[7].x < -60){
+                turtle[7].x = 520;
+            }
+            if(turtle[8].x < -60){
+                turtle[8].x = 520;
+            }
+            if(turtle[9].x < -60){
+                turtle[9].x = 520;
+            }
+            if(turtle[10].x < -60){
+                turtle[10].x = 520;
+            }
+            if(turtle[11].x < -60){
+                turtle[11].x = 520;
+            }
+            if(turtle[12].x < -60){
+                turtle[12].x = 520;
+            }
+            if(turtle[13].x < -60){
+                turtle[13].x = 520;
+            }
+            if(turtle[14].x < -60){
+                turtle[14].x = 520;
+            }
+            if(turtle[15].x < -60){
+                turtle[15].x = 520;
+            }
+            if(turtle[16].x < -60){
+                turtle[16].x = 520;
+            }
+            if(turtle[17].x < -60){
+                turtle[17].x = 520;
+            }
+            if(turtle[18].x < -60){
+                turtle[18].x = 520;
+            }
+            if(smallLog[1].x > 560){
+                smallLog[1].x = -60;
+            }
+            if(smallLog[2].x > 560){
+                smallLog[2].x = -60;
+            }
+            if(medLog[1].x > 620){
+                medLog[1].x = -100;
+            }
+            if(medLog[2].x > 620){
+                medLog[2].x = -100;
+            }
+            if(largeLog[1].x > 620){
+                largeLog[1].x = -100;
+            }
+            
+            if(largeLog[2].x > 620){
+                largeLog[2].x = -100;
+            }
+        }
+        function roadCollision(game1){
+            if(game1.physics.world.overlap(playerFrog,carType1[1]) || game1.physics.world.overlap(playerFrog,carType1[2]) || game1.physics.world.overlap(playerFrog,carType1[3]) || game1.physics.world.overlap(playerFrog,carType2[1]) || game1.physics.world.overlap(playerFrog,carType2[2]) || game1.physics.world.overlap(playerFrog,carType3[1]) || game1.physics.world.overlap(playerFrog,carType3[2]) || game1.physics.world.overlap(playerFrog,carType3[3]) || game1.physics.world.overlap(playerFrog,carType4[1]) || game1.physics.world.overlap(playerFrog,carType4[2]) || game1.physics.world.overlap(playerFrog,carType5[1]) || game1.physics.world.overlap(playerFrog,carType5[2])){
+                resetFrog();
+                loseALife();
+            }
+        }
+        function waterCollision(game1){
+            if(playerFrog.y == line7 || playerFrog.y == line8 || playerFrog.y == line9 || playerFrog.y == line10 || playerFrog.y == line11){
+                if(game1.physics.world.overlap(playerFrog, turtle[1]) || game1.physics.world.overlap(playerFrog, turtle[2]) || game1.physics.world.overlap(playerFrog, turtle[3]) || game1.physics.world.overlap(playerFrog, turtle[4]) || game1.physics.world.overlap(playerFrog, turtle[5]) || game1.physics.world.overlap(playerFrog, turtle[6]) || game1.physics.world.overlap(playerFrog, turtle[7]) || game1.physics.world.overlap(playerFrog, turtle[8]) || game1.physics.world.overlap(playerFrog, turtle[9]) || game1.physics.world.overlap(playerFrog, turtle[10]) || game1.physics.world.overlap(playerFrog, turtle[11]) || game1.physics.world.overlap(playerFrog, turtle[12])){
+                    playerFrog.x = playerFrog.x + line7Speed;
+                }
+                else if(game1.physics.world.overlap(playerFrog, smallLog[1]) || game1.physics.world.overlap(playerFrog,smallLog[2])){
+                    playerFrog.x = playerFrog.x + line8Speed;
+                }
+                else if(game1.physics.world.overlap(playerFrog, largeLog[1]) || game1.physics.world.overlap(playerFrog, medLog[1])){
+                    playerFrog.x = playerFrog.x + line9Speed;
+                }
+                else if(game1.physics.world.overlap(playerFrog, turtle[13]) || game1.physics.world.overlap(playerFrog, turtle[14]) || game1.physics.world.overlap(playerFrog, turtle[15]) || game1.physics.world.overlap(playerFrog, turtle[16]) || game1.physics.world.overlap(playerFrog, turtle[17]) || game1.physics.world.overlap(playerFrog, turtle[18])){
+                    playerFrog.x = playerFrog.x + line10Speed;
+                }
+                else if(game1.physics.world.overlap(playerFrog, largeLog[2]) || game1.physics.world.overlap(playerFrog, medLog[2])){
+                    playerFrog.x = playerFrog.x + line11Speed;
+                }
+                else{
+                    resetFrog();
+                    loseALife();
+                }
+            }
+        }
+        function speed(){
+            line1Speed = -2.5 - (0.2 * level);
+            line2Speed = 2 + (0.2 * level);
+            line3Speed = -2 - (0.2 * level);
+            line4Speed = 3.5 + (0.2 * level);
+            line5Speed = -1.5 - (0.2 * level);
+            line7Speed = -1.75 - (0.2 * level);
+            line8Speed = 2 + (0.2 * level);
+            line9Speed = 1.5 + (0.2 * level);
+            line10Speed = -1.9 - (0.2 * level);
+            line11Speed = 2.5 + (0.2 * level);
+        }
+        function slotCollision(game1){
+            if(playerFrog.y == endLine){
+                if(game1.physics.world.overlap(playerFrog, endHitbox1) && slot[1] != "full"){
+                    endFrog1 = game1.physics.add.image(35, 37, "playerFrog");
+                    if(slot[1] == "fly"){
+                        scoreValue = scoreValue + 10;
+                        slot[1] = "full";
+                        flyLocation = 6;
+                        flyMovement(this);
+                    }
+                    slot[1] = "full";
+                    scoreValue = scoreValue + 10;
+                    for(x = 0;x <= 11; x = x + 1){
+                        progressCheck[x] = false;
+                    }
+                    resetFrog();
+                }
+                else if(game1.physics.world.overlap(playerFrog, endHitbox2) && slot[2] != "full"){
+                    endFrog2 = game1.physics.add.image(145, 37, "playerFrog");
+                    if(slot[2] == "fly"){
+                        scoreValue = scoreValue + 10;
+                        slot[2] = "full";
+                        flyLocation = 6;
+                        flyMovement(this);
+                    }
+                    slot[2] = "full";
+                    scoreValue = scoreValue + 10;
+                    for(x = 0;x <= 11; x = x + 1){
+                        progressCheck[x] = false;
+                    }
+                    resetFrog();
+                }
+                else if(game1.physics.world.overlap(playerFrog, endHitbox3) && slot[3] != "full"){
+                    endFrog3 = game1.physics.add.image(254, 37, "playerFrog");
+                    if(slot[3] == "fly"){
+                        scoreValue = scoreValue + 10;
+                        slot[3] = "full";
+                        flyLocation = 6;
+                        flyMovement(this);
+                    }
+                    slot[3] = "full";
+                    scoreValue = scoreValue + 10;
+                    for(x = 0;x <= 11; x = x + 1){
+                        progressCheck[x] = false;
+                    }
+                    resetFrog();
+                }
+                else if(game1.physics.world.overlap(playerFrog, endHitbox4) && slot[4] != "full"){
+                    endFrog4 = game1.physics.add.image(363, 37, "playerFrog");
+                    if(slot[4] == "fly"){
+                        scoreValue = scoreValue + 10;
+                        slot[4] = "full";
+                        flyLocation = 6;
+                        flyMovement(this);
+                    }
+                    slot[4] = "full";
+                    scoreValue = scoreValue + 10;
+                    for(x = 0;x <= 11; x = x + 1){
+                        progressCheck[x] = false;
+                    }
+                    resetFrog();
+                }
+                else if(game1.physics.world.overlap(playerFrog, endHitbox5) && slot[5] != "full"){
+                    endFrog5 = game1.physics.add.image(472, 37, "playerFrog");
+                    if(slot[5] == "fly"){
+                        scoreValue = scoreValue + 10;
+                        slot[5] = "full";
+                        flyLocation = 6;
+                        flyMovement(this);
+                    }
+                    slot[5] = "full";
+                    scoreValue = scoreValue + 10;
+                    for(x = 0;x <= 11; x = x + 1){
+                        progressCheck[x] = false;
+                    }
+                    resetFrog();
+                }
+                else{
+                    playerFrog.y = line11;
+                }
+            }
+        }
+        function levelComplete(){
+            level = level + 1;
+            scoreValue = scoreValue + 50;
+            endFrog1.destroy();
+            endFrog2.destroy();
+            endFrog3.destroy();
+            endFrog4.destroy();
+            endFrog5.destroy();
+            for(x = 0; x <= 5; x = x + 1){
+                slot[x] = "empty";
+            }
+            for(x = 0;x <= 11; x = x + 1){
+                progressCheck[x] = false;
+            }
+            if(extraLife == true){
+                if(lifeValue[2] == false){
+                    lifeValue[2] = true;
+                }
+                else if(lifeValue[3] == false){
+                    lifeValue[3] = true;
+                }
+                else if(lifeValue[4] == false){
+                    lifeValue[4] = true;
+                }
+                else if(lifeValue[5] == false){
+                    lifeValue[5] = true;
+                }
+                else if(lifeValue[6] == false){
+                    lifeValue[6] = true;
+                }
+                else if(lifeValue[7] == false){
+                    lifeValue[7] = true;
+                }
+                else if(lifeValue[8] == false){
+                    lifeValue[8] = true;
+                }
+                else if(lifeValue[9] == false){
+                    lifeValue[9] = true;
+                }
+                else if(life[10] == false){
+                    life[10] = true;
+                }
+                else if(lifeValue[11] == false){
+                    lifeValue[11] = true;
+                }
+                else if(lifeValue[12] == false){
+                    lifeValue[12] = true;
+                }
+                else if(lifeValue[13] == false){
+                    lifeValue[13] = true;
+                }
+                else if(lifeValue[14] == false){
+                    lifeValue[14] = true;
+                }
+                else if(lifeValue[15] == false){
+                    lifeValue[15] = true;
+                }
+            }
+            lifeValue[1] = true;
+            lifeValue[2] = true;
+            lifeValue[3] = true;
+            extraLife = true;
+        }
+        function scoreTracker(){
+            if(playerFrog.y == line1 && progressCheck[1] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[1] = true;
+            }
+            if(playerFrog.y == line2 && progressCheck[2] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[2] = true;
+            }
+            if(playerFrog.y == line3 && progressCheck[3] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[3] = true;
+            }
+            if(playerFrog.y == line4 && progressCheck[4] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[4] = true;
+            }
+            if(playerFrog.y == line5 && progressCheck[5] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[5] = true;
+            }
+            if(playerFrog.y == line6 && progressCheck[6] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[6] = true;
+            }
+            if(playerFrog.y == line7 && progressCheck[7] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[7] = true;
+            }
+            if(playerFrog.y == line8 && progressCheck[8] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[8] = true;
+            }
+            if(playerFrog.y == line9 && progressCheck[9] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[9] = true;
+            }
+            if(playerFrog.y == line10 && progressCheck[10] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[10] = true;
+            }
+            if(playerFrog.y == line11 && progressCheck[11] == false){
+                scoreValue = scoreValue + 1;
+                progressCheck[11] = true;
+            }
+        }
+        function flyMovement(game1){
+            let clear = false;
+            fly.destroy();
+            slot[flyLocation] = "empty";
+            if(slot[1] == "full" && slot[2] == "full" && slot[3] == "full" && slot[4] == "full" && slot[5] == "full"){
+            }
+            else{
+            while(clear == false){
+                flyLocation = Math.round(Math.random() * 4 + 1);
+                
+                if(slot[flyLocation] == "empty"){
+                    clear = true;
+                }
+            }
+            if(flyLocation == 1){
+                fly = game1.add.image(37, 37, "fly");
+                slot[1] = "fly";
+            }
+            if(flyLocation == 2){
+                fly = game1.add.image(145, 37, "fly");
+                slot[2] = "fly";
+            }
+            if(flyLocation == 3){
+                fly = game1.add.image(255, 37, "fly");
+                slot[3] = "fly";
+            }
+            if(flyLocation == 4){
+                fly = game1.add.image(363, 37, "fly");
+                slot[4] = "fly";
+            }
+            if(flyLocation == 5){
+                fly = game1.add.image(472, 37, "fly");
+                slot[5] = "fly";
+            }
+            }
+            flyTimer = 0;
+        }
+        function timer(){
+            timeBar.x = timeBar.x + 0.1;
+            if(timeBar.x >= 318){
+                loseALife();
+                resetFrog();
+            }
+        }
+        function lifeTracker(){
+            if(lifeValue[1] == true){
+                life[1].visible = true;
+            }
+            if(lifeValue[2] == true){
+                life[2].visible = true;
+            }
+            if(lifeValue[3] == true){
+                life[3].visible = true;
+            }
+            if(lifeValue[4] == true){
+                life[4].visible = true;
+            }
+            if(lifeValue[5] == true){
+                life[5].visible = true;
+            }
+            if(lifeValue[6] == true){
+                life[6].visible = true;
+            }
+            if(lifeValue[7] == true){
+                life[7].visible = true;
+            }
+            if(lifeValue[8] == true){
+                life[8].visible = true;
+            }
+            if(lifeValue[9] == true){
+                lifeValue[9].visible = true;
+            }
+            if(lifeValue[10] == true){
+                life[10].visible = true;
+            }
+            if(lifeValue[11] == true){
+                life[11].visible = true;
+            }
+            if(lifeValue[12] == true){
+                life[12].visible = true;
+            }
+            if(lifeValue[13] == true){
+                life[13].visible = true;
+            }
+            if(lifeValue[14] == true){
+                life[14].visible = true;
+            }
+            if(lifeValue[15] == true){
+                life[15].visible = true;
+            }
+            if(lifeValue[1] == false){
+                life[1].visible = false;
+                GameOver();
+            }
+            if(lifeValue[2] == false){
+                life[2].visible = false;
+            }
+            if(lifeValue[3] == false){
+                life[3].visible = false;
+            }
+            if(lifeValue[4] == false){
+                life[4].visible = false;
+            }
+            if(lifeValue[5] == false){
+                life[5].visible = false;
+            }
+            if(lifeValue[6] == false){
+                life[6].visible = false;
+            }
+            if(lifeValue[7] == false){
+                life[7].visible = false;
+            }
+            if(lifeValue[8] == false){
+                life[8].visible = false;
+            }
+            if(lifeValue[9] == false){
+                life[9].visible = false;
+            }
+            if(lifeValue[10] == false){
+                life[10].visible = false;
+            }
+            if(lifeValue[11] == false){
+                life[11].visible = false;
+            }
+            if(lifeValue[12] == false){
+                life[12].visible = false;
+            }
+            if(lifeValue[13] == false){
+                life[13].visible = false;
+            }
+            if(lifeValue[14] == false){
+                life[14].visible = false;
+            }
+            if(lifeValue[15] == false){
+                life[15].visible = false;
+            }
+        }
+        function loseALife(){
+            if(lifeValue[15] == true){
+                lifeValue[15] = false;
+            }
+            else if(lifeValue[14] == true){
+                lifeValue[14] = false;
+            }
+            else if(lifeValue[13] == true){
+                lifeValue[13] = false;
+            }
+            else if(lifeValue[12] == true){
+                lifeValue[12] = false;
+            }
+            else if(lifeValue[11] == true){
+                lifeValue[11] = false;
+            }
+            else if(lifeValue[10] == true){
+                lifeValue[10] = false;
+            }
+            else if(lifeValue[9] == true){
+                lifeValue[9] = false;
+            }
+            else if(lifeValue[8] == true){
+                lifeValue[8] = false;
+            }
+            else if(lifeValue[7] == true){
+                lifeValue[7] = false;
+            }
+            else if(lifeValue[6] == true){
+                lifeValue[6] = false;
+            }
+            else if(lifeValue[5] == true){
+                lifeValue[5] = false;
+            }
+            else if(lifeValue[4] == true){
+                lifeValue[4] = false;
+            }
+            else if(lifeValue[3] == true){
+                lifeValue[3] = false;
+            }
+            else if(lifeValue[2] == true){
+                lifeValue[2] = false;
+            }
+            else if(lifeValue[1] == true){
+                lifeValue[1] = false;
+            }
+            extraLife = false;
+        }
+        function GameOver(){
+            allowUpMovement = false;
+            carType1[1].visible = false;
+            carType1[2].visible = false;
+            carType1[3].visible = false;
+            carType2[1].visible = false;
+            carType2[2].visible = false;
+            carType3[1].visible = false;
+            carType3[2].visible = false;
+            carType3[3].visible = false;
+            carType4[1].visible = false;
+            carType4[2].visible = false;
+            carType5[1].visible = false;
+            carType5[2].visible = false;
+            for(x = 0; x <= 18; x = x + 1){
+                turtle[x].visible = false;
+            }
+            smallLog[1].visible = false;
+            smallLog[2].visible = false;
+            medLog[1].visible = false;
+            medLog[2].visible = false;
+            largeLog[1].visible = false;
+            largeLog[2].visible = false;
+            fly.visible = false;
+            time.visible = false;
+            if(slot[1] == "full"){
+                endFrog1.visible = false;
+            }
+            if(slot[2] == "full"){
+                endFrog2.visible = false;
+            }
+            if(slot[3] == "full"){
+                endFrog3.visible = false;
+            }
+            if(slot[4] == "full"){
+                endFrog4.visible = false;
+            }
+            if(slot[5] == "full"){
+                endFrog5.visible = false;
+            }
+            playerFrog.visible = false;
+            jQuery(document).ready(function(){
+                $("#score").hide();
+                $("#level").hide();
+                $("#youCroaked").text("You Croaked!");
+                $("#finalScore").text("Your Score: " + scoreValue + ".");
+                $("#finalLevel").text("You got to level " + levelResult + ".");
+                $("#retryNotice").text("Refresh the page to play again!");
+            });
+        }
+
+    //start of main game screen
+     class mainGame extends Phaser.Scene {
+
+        constructor (config)
+        {
+            super(config);
+        }
+
+        preload ()
+        {
+            //loads a resource into memory. first string = name/id of resource, second string = path.
+            this.load.image("endHitbox", "assets/sprites/FrogLife.PNG");
+            this.load.image("background", "assets/sprites/Background.PNG");
+            this.load.image("time", "assets/sprites/Time.PNG");
+            this.load.image("life", "assets/sprites/FrogLife.PNG");
+            this.load.image("playerFrog", "assets/sprites/Frog.PNG");
+            this.load.image("fly", "assets/sprites/Fly.PNG");
+            this.load.image("carType1", "assets/sprites/Car2.PNG");
+            this.load.image("carType2", "assets/sprites/Car1.PNG");
+            this.load.image("carType3", "assets/sprites/PinkCar.PNG");
+            this.load.image("carType4", "assets/sprites/WhiteCar.PNG");
+            this.load.image("carType5", "assets/sprites/WhiteTruck.PNG");
+            this.load.image("turtle", "assets/sprites/Bug.PNG");
+            this.load.image("smallLog", "assets/sprites/SmallLog.PNG");
+            this.load.image("medLog", "assets/sprites/MediumLog.PNG");
+            this.load.image("largeLog", "assets/sprites/LargeLog.PNG");
+            this.load.image("timeBar", "assets/sprites/TimeBar.PNG");
+        }
+        //create is used to create the resources and assign them to our variables.
+        //note, origin of coordinates is in the center.
+        create (data)
+        {
+            // first input = x coordinates, second input = y coordinates, third = image id.
+            endHitbox1 = this.physics.add.image(36, 37, "endHitbox");
+            endHitbox2 = this.physics.add.image(145, 37, "endHitbox");
+            endHitbox3 = this.physics.add.image(254, 37, "endHitbox");
+            endHitbox4 = this.physics.add.image(363, 37, "endHitbox");
+            endHitbox5 = this.physics.add.image(472, 37, "endHitbox");
+            background = this.physics.add.image(253.5, 272.5, "background");//size = 507 by 545
+            time = this.add.image(390, 533, "time");
+            timeBar = this.add.image(165, 533, "timeBar");//165 is start of timer, 318 is end of timer.
+            life[1] = this.add.image(16,508, "life");
+            life[2] = this.add.image(32,508, "life");
+            life[3] = this.add.image(48,508, "life");
+            life[4] = this.add.image(64,508, "life");
+            life[5] = this.add.image(80,508, "life");
+            life[6] = this.add.image(96,508, "life");
+            life[7] = this.add.image(112,508, "life");
+            life[8] = this.add.image(128,508, "life");
+            life[9] = this.add.image(144,508, "life");
+            life[10] = this.add.image(160,508, "life");
+            life[11] = this.add.image(176,508, "life");
+            life[12] = this.add.image(192,508, "life");
+            life[13] = this.add.image(208,508, "life");
+            life[14] = this.add.image(224,508, "life");
+            life[15] = this.add.image(240,508, "life");
+            leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+            rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+            upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+            downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+            fly = this.add.image(472, 37, "fly");//end locations: 37, 145, 255, 363, and 472.
+            carType1[1] = this.physics.add.image(6, 438, "carType1");
+            carType1[2] = this.physics.add.image(343, 438, "carType1");
+            carType1[3] = this.physics.add.image(501, 438, "carType1");
+            carType2[1] = this.physics.add.image(60, 400, "carType2");
+            carType2[2] = this.physics.add.image(200, 400, "carType2");
+            carType3[1] = this.physics.add.image(14, 365, "carType3");
+            carType3[2] = this.physics.add.image(154, 365, "carType3");
+            carType3[3] = this.physics.add.image(522, 365, "carType3");
+            carType4[1] = this.physics.add.image(254, 330, "carType4");
+            carType4[2] = this.physics.add.image(400, 330, "carType4");
+            carType5[1] = this.physics.add.image(244, 295, "carType5");
+            carType5[2] = this.physics.add.image(428, 295, "carType5");
+            turtle[1] = this.physics.add.image(-45, 223, "turtle");
+            turtle[2] = this.physics.add.image(-10, 223, "turtle");
+            turtle[3] = this.physics.add.image(25, 223, "turtle");
+            turtle[4] = this.physics.add.image(100, 223, "turtle");
+            turtle[5] = this.physics.add.image(135, 223, "turtle");
+            turtle[6] = this.physics.add.image(170, 223, "turtle");
+            turtle[7] = this.physics.add.image(245, 223, "turtle");
+            turtle[8] = this.physics.add.image(280, 223, "turtle");
+            turtle[9] = this.physics.add.image(315, 223, "turtle");
+            turtle[10] = this.physics.add.image(390, 223, "turtle");
+            turtle[11] = this.physics.add.image(425, 223, "turtle");
+            turtle[12] = this.physics.add.image(460, 223, "turtle");
+            turtle[13] = this.physics.add.image(260, 110, "turtle");
+            turtle[14] = this.physics.add.image(295, 110, "turtle");
+            turtle[15] = this.physics.add.image(390, 110, "turtle");
+            turtle[16] = this.physics.add.image(425, 110, "turtle");
+            turtle[17] = this.physics.add.image(520, 110, "turtle");
+            turtle[18] = this.physics.add.image(-25, 110, "turtle");
+            smallLog[1] = this.physics.add.image(115, 183, "smallLog");
+            smallLog[2] = this.physics.add.image(310, 183, "smallLog");
+            medLog[1] = this.physics.add.image(484, 150, "medLog");
+            medLog[2] = this.physics.add.image(280, 75, "medLog");
+            largeLog[1] = this.physics.add.image(105, 150, "largeLog");
+            largeLog[2] = this.physics.add.image(20, 75, "largeLog");
+            playerFrog = this.physics.add.image(250, 478, "playerFrog");//size = 0.431 by 0.486
+            playerFrog.angle = 0;//right(default) = 0. down = 90. left = 180. up = -90.
+            
+        }
+//update is looped, and can change the properties of the game sprites every frame.
+        update()
+        {
+            speed();
+            roadCollision(this);
+            waterCollision(this);
+            slotCollision(this);
+            moveRoad();
+            moveWater();
+            resetRoad();
+            resetWater();
+            movement();
+            scoreTracker();
+            timer();
+            lifeTracker();
+            flyTimer = flyTimer + 1;
+            levelResult = level + 1;
+            if(flyTimer >= 500){
+                flyMovement(this);
+            }
+            if(slot[1] == "full" && slot[2] == "full" && slot[3] == "full" && slot[4] == "full" && slot[5] == "full"){
+                levelComplete();
+            }
+            if((playerFrog.x < -20) || playerFrog.x > 530){
+		resetFrog();
+                loseALife();
+            }
+            jQuery(document).ready(function(){
+                $("#score").text("SCORE " + scoreValue);
+                $("#level").text("LEVEL " + levelResult);
+            });
+            //console.log(scoreValue);
+            //console.log(flyLocation);
+            //console.log(playerFrog.y);
+        }
+
+    }//end of main game screen.
+
+    var config = {
+        type: Phaser.AUTO,
+        parent: 'phaser-example',
+        width: 507,
+        height: 545,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false
+             
+                }
+        }
+    };
+
+    var game = new Phaser.Game(config);
+   
+    game.scene.add("game",mainGame);
+    game.scene.start("game");
+   
+    
+    </script>
+</body>
+</html>
